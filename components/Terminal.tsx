@@ -18,20 +18,20 @@ export function Terminal({ title, style, children }: TerminalProps) {
     <ThemedView
       style={[
         styles.terminalContainer,
-        { borderColor: isDark ? "#333" : "#E0E0E0" },
+        { borderColor: isDark ? "#333" : "#333" },
         style,
       ]}
     >
       <ThemedView
         style={[
           styles.terminalHeader,
-          { backgroundColor: isDark ? "#333" : "#F5F5F5" },
+          { backgroundColor: isDark ? "#333" : "#333" },
         ]}
       >
         <ThemedText
-          style={[styles.terminalTitle, { color: isDark ? "#fff" : "#000" }]}
+          style={[styles.terminalTitle, { color: isDark ? "#fff" : "#fff" }]}
         >
-          $ {title}
+          - {title}
         </ThemedText>
       </ThemedView>
 

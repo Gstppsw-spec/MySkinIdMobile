@@ -1,19 +1,18 @@
 import { ConfigContext, ExpoConfig } from "expo/config";
 import { version } from "./package.json";
 
-// Replace these with your EAS project ID and project slug.
-// You can find them at https://expo.dev/accounts/[account]/projects/[project].
-const EAS_PROJECT_ID = "4a40e811-db03-4dfb-bc1d-c97b8edc5a78";
-const PROJECT_SLUG = "with-envs";
-const OWNER = "betoatexpo";
 
-// App production config
-const APP_NAME = "App Name";
-const BUNDLE_IDENTIFIER = "com.company.appname";
-const PACKAGE_NAME = "com.company.appname";
+const EAS_PROJECT_ID = "e2e4f0d1-d418-4ca2-a70a-eb203aa0b677";
+const PROJECT_SLUG = "go-glow";
+const OWNER = "gstp_psw15";
+
+const APP_NAME = "Go Glow";
+const BUNDLE_IDENTIFIER = "com.company.goglow";
+const PACKAGE_NAME = "com.company.goglow";
 const ICON = "./assets/images/icons/iOS-Prod.png";
-const ADAPTIVE_ICON = "./assets/images/icons/Android-Prod.png";
+const ADAPTIVE_ICON = "./assets/icons/adaptive-icon.png";
 const SCHEME = "app-scheme";
+
 
 export default ({ config }: ConfigContext): ExpoConfig => {
   console.log("⚙️ Building app for environment:", process.env.APP_ENV);
@@ -26,23 +25,37 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     ...config,
     name: name,
-    version, // Automatically bump your project version with `npm version patch`, `npm version minor` or `npm version major`.
-    slug: PROJECT_SLUG, // Must be consistent across all environments.
+    version,
+    slug: PROJECT_SLUG,
     orientation: "portrait",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
-    icon: icon,
     scheme: scheme,
     ios: {
       supportsTablet: true,
       bundleIdentifier: bundleIdentifier,
+      "infoPlist": {
+        ITSAppUsesNonExemptEncryption: false,
+        NSLocationWhenInUseUsageDescription: "Aplikasi butuh akses lokasi untuk presensi dan upload data.",
+        NSCameraUsageDescription: "Aplikasi butuh akses kamera untuk mengambil foto untuk presensi dan upload data.",
+      },
+      icon: {
+        dark: "./assets/icons/ios-dark.png",
+        light: "./assets/icons/ios-light.png",
+        tinted: "./assets/icons/ios-tinted.png",
+      }
     },
     android: {
       adaptiveIcon: {
-        foregroundImage: adaptiveIcon,
+        foregroundImage: "./assets/icons/adaptive-icon.png",
         backgroundColor: "#ffffff",
+        
       },
       package: packageName,
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ]
     },
     updates: {
       url: `https://u.expo.dev/${EAS_PROJECT_ID}`,
@@ -65,12 +78,23 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       [
         "expo-splash-screen",
         {
-          image: "./assets/images/splash-icon.png",
-          imageWidth: 200,
+          image: "./assets/icons/splash-icon-dark.png",
           resizeMode: "contain",
           backgroundColor: "#ffffff",
+          dark: {
+            image: "./assets/icons/splash-icon-light.png",
+            backgroundColor: "#000000",
+          },
+          imageWidth: 200,
         },
-      ],
+        
+      ],[
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Aplikasi butuh akses lokasi untuk presensi dan upload data.",
+          "locationWhenInUsePermission": "Aplikasi butuh akses lokasi untuk presensi dan upload data.."
+        }
+      ]
     ],
     experiments: {
       typedRoutes: true,
@@ -79,8 +103,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   };
 };
 
-// Dynamically configure the app based on the environment.
-// Update these placeholders with your actual values.
 export const getDynamicAppConfig = (
   environment: "development" | "preview" | "production"
 ) => {
