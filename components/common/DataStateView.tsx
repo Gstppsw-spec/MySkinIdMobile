@@ -13,6 +13,7 @@ interface DataStateViewProps {
   data?: any[] | null;
   onRetry?: () => void;
   emptyMessage?: string;
+  message?: string;
 }
 
 const DataStateView: React.FC<DataStateViewProps> = ({
@@ -21,6 +22,7 @@ const DataStateView: React.FC<DataStateViewProps> = ({
   data,
   onRetry,
   emptyMessage = "Belum ada data.",
+  message,
 }) => {
   if (isLoading) {
     return (
@@ -50,6 +52,7 @@ const DataStateView: React.FC<DataStateViewProps> = ({
     return (
       <View style={styles.center}>
         <Text style={styles.text}>{emptyMessage}</Text>
+        {message && <Text style={styles.subtitle}>{message}</Text>}
       </View>
     );
   }
@@ -79,6 +82,13 @@ const styles = StyleSheet.create({
   retryText: {
     color: "#fff",
     fontWeight: "600",
+  },
+  subtitle: {
+    marginTop: 8,
+    fontSize: 14,
+    color: "#64748B",
+    textAlign: "center",
+    lineHeight: 20,
   },
 });
 

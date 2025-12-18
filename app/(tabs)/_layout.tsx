@@ -35,7 +35,7 @@ export default function TabLayout() {
             <Text
               style={{
                 color,
-                fontWeight: focused ? "700" : "400",
+                fontWeight: focused ? "700" : "500",
                 fontSize: 11,
               }}
             >
@@ -51,7 +51,6 @@ export default function TabLayout() {
           ),
         }}
       />
-
       <Tabs.Screen
         name="consultation"
         options={{
@@ -60,7 +59,7 @@ export default function TabLayout() {
             <Text
               style={{
                 color,
-                fontWeight: focused ? "700" : "400",
+                fontWeight: focused ? "700" : "500",
                 fontSize: 11,
               }}
             >
@@ -78,6 +77,31 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
+        name="skin_analys"
+        options={{
+          title: "Skin Analys",
+          tabBarLabel: ({ focused, color }) => (
+            <Text
+              style={{
+                color,
+                fontWeight: focused ? "900" : "500",
+                fontSize: 11,
+              }}
+            >
+              {focused ? "Skin Analys" : "Skin Analys"}
+            </Text>
+          ),
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? "scan" : "scan-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
         name="favorite"
         options={{
           title: "Favorite",
@@ -85,7 +109,7 @@ export default function TabLayout() {
             <Text
               style={{
                 color,
-                fontWeight: focused ? "700" : "400",
+                fontWeight: focused ? "700" : "500",
                 fontSize: 11,
               }}
             >
@@ -110,7 +134,7 @@ export default function TabLayout() {
             <Text
               style={{
                 color,
-                fontWeight: focused ? "700" : "400",
+                fontWeight: focused ? "700" : "500",
                 fontSize: 11,
               }}
             >

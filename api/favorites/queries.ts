@@ -22,14 +22,15 @@ export interface Favorite {
   product: Product[];
 }
 
-const fetctFavorites = async (id: string): Promise<Favorite> => {
+const fetchFavorites = async (id: string): Promise<Favorite> => {
   const { data } = await apiClient.get(`/v2/favorite/${id}`);
   return data?.data;
 };
 
-export const useFavorites = (id: string) =>
-  useQuery({
-    queryKey: ["favorite", id],
-    queryFn: () => fetctFavorites(id!),
-    enabled: !!id,
+export function useFavorites(customerId?: string | null) {
+  return useQuery({
+    queryKey: ["favorites", customerId],
+    queryFn: () => fetchFavorites(customerId!), 
+    enabled: typeof customerId === "string" && customerId.length > 0,
   });
+}

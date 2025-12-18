@@ -33,6 +33,7 @@ const DEFAULT_IMAGES = {
 };
 
 const LocationCard: React.FC<Props> = ({ item, isfull = false }) => {
+
   const handlePress = () =>
     router.push({
       pathname: "/location/detail",

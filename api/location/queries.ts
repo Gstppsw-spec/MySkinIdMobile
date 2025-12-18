@@ -12,7 +12,7 @@ const fetchLocation = async (customerId: string): Promise<Location[]> => {
 
 const fetchLocationById = async (
   id: string,
-  customerId: string
+  customerId?: string
 ): Promise<Location> => {
   const { data } = await apiClient.get(
     `/v2/location/${id}/detail-customer/${customerId}`
@@ -22,7 +22,6 @@ const fetchLocationById = async (
 
 export const useLocations = () => {
   const customerId = useAuthStore((state) => state.customerId);
-
   return useQuery({
     queryKey: ["locations", customerId],
     queryFn: () => fetchLocation(customerId!),
@@ -36,8 +35,8 @@ export const useLocation = (id?: string) => {
   const customerId = useAuthStore((state) => state.customerId);
 
   return useQuery({
-    queryKey: ["location", id, customerId],
-    queryFn: () => fetchLocationById(id!, customerId!),
-    enabled: !!id && !!customerId,
+    queryKey: ["location", id],
+    queryFn: () => fetchLocationById(id!),
+    enabled: !!id,
   });
 };

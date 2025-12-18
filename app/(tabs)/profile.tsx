@@ -41,7 +41,9 @@ export default function ProfileScreen() {
       {
         text: "Logout",
         style: "destructive",
-        onPress: () => {router.replace('/authentication'), logout()},
+        onPress: () => {
+          router.push("/authentication"), logout();
+        },
       },
     ]);
   };

@@ -16,6 +16,7 @@ import { useConsultationCategory } from "@/api/consultation";
 import HotDeals from "@/components/hotdeals/hotDeals";
 import { useProducts } from "@/api/product";
 import { useServices } from "@/api/service";
+import HomeSkeleton from "@/components/home/HomeSkeleton";
 
 export default function HomeScreen() {
   const [scrollY, setScrollY] = useState(0);
@@ -93,6 +94,12 @@ export default function HomeScreen() {
     refetchServices();
   };
 
+  const isLoading =
+    isLoadingLocations ||
+    isLoadingProducts ||
+    isLoadingServices ||
+    isLoadingConsultationCategory;
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <PopUpUpdate />
@@ -114,38 +121,44 @@ export default function HomeScreen() {
           />
         }
       >
-        <LinearGradient colors={["#6C1FC7", "#6C1FC7", "#6C1FC7"]}>
-          <Carousel images={images} autoSlideInterval={4000} />
-        </LinearGradient>
+        {isLoading ? (
+          <HomeSkeleton />
+        ) : (
+          <>
+            <LinearGradient colors={["#6C1FC7", "#6C1FC7", "#6C1FC7"]}>
+              <Carousel images={images} autoSlideInterval={4000} />
+            </LinearGradient>
 
-        {consultationCategory && consultationCategory?.length > 0 && (
-          <CategoryConsultationComponent
-            category_consultation={consultationCategory}
-          />
-        )}
+            {consultationCategory && consultationCategory?.length > 0 && (
+              <CategoryConsultationComponent
+                category_consultation={consultationCategory}
+              />
+            )}
 
-        {services && services?.length > 0 && (
-          <HotDeals
-            items={services}
-            title="🔥 Top Deals Treatment For You"
-            istreatment
-          />
-        )}
+            {services && services?.length > 0 && (
+              <HotDeals
+                items={services}
+                title="🔥 Top Deals Treatment For You"
+                istreatment
+              />
+            )}
 
-        {products && products?.length > 0 && (
-          <HotDeals
-            items={products}
-            title="🔥 Top Deals Product For You"
-            isproduct
-          />
-        )}
+            {products && products?.length > 0 && (
+              <HotDeals
+                items={products}
+                title="🔥 Top Deals Product For You"
+                isproduct
+              />
+            )}
 
-        {locations && locations?.length > 0 && (
-          <HotDeals
-            items={locations}
-            title="Discover Premium Clinics"
-            islocation
-          />
+            {locations && locations?.length > 0 && (
+              <HotDeals
+                items={locations}
+                title="Discover Premium Clinics"
+                islocation
+              />
+            )}
+          </>
         )}
       </ScrollView>
     </SafeAreaView>

@@ -32,33 +32,6 @@ export default function FavoriteScreen() {
   const activeTab = useSearchStore((state) => state.activeTab);
   const setActiveTab = useSearchStore((state) => state.setActiveTab);
 
-  if (!customerId) {
-    return <RequiredLogin />;
-  }
-
-  const {
-    data: locations,
-    isLoading: isLoadingLocations,
-    refetch: refetchLocations,
-    isRefetching: isRefetchingLocations,
-  } = useLocations();
-
-  const {
-    data: products,
-    isLoading: isLoadingProducts,
-    refetch: refetchProducts,
-    isRefetching: isRefetchingProducts,
-    isError: isErrorProducts,
-  } = useProducts();
-
-  const {
-    data: services,
-    isLoading: isLoadingServices,
-    refetch: refetchServices,
-    isRefetching: isRefetchingServices,
-    isError: isErrorServices,
-  } = useServices();
-
   const {
     data: favorites,
     isLoading,
@@ -67,7 +40,9 @@ export default function FavoriteScreen() {
     isError,
   } = useFavorites(customerId);
 
-  console.log(isError);
+  if (!customerId) {
+    return <RequiredLogin />;
+  }
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: "#FFF" }]}>

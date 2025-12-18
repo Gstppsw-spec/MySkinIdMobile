@@ -26,6 +26,8 @@ const { width } = Dimensions.get("window");
 
 export default function ClinicDetail() {
   const { id } = useLocalSearchParams();
+  console.log(id);
+  
   const customerId = useAuthStore((state) => state.customerId);
   const [showClinicName, setShowClinicName] = useState<boolean>(false);
   const { data, isLoading, isError, refetch } = useLocation(id as any);
@@ -89,6 +91,9 @@ export default function ClinicDetail() {
       },
     });
   };
+
+  console.log(isError, isLoading, data);
+  
 
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
