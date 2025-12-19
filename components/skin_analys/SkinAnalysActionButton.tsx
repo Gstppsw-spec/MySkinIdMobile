@@ -5,20 +5,16 @@ import SkinAnalysImagePicker from "./SkinAnalysImagePicker";
 
 export default function SkinAnalysActionButton({
   hasData,
-    customerId
+  customerId,
 }: {
   hasData: boolean;
   customerId: string;
-
 }) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => setOpen(true)}
-      >
+      <TouchableOpacity style={styles.button} onPress={() => setOpen(true)}>
         <Ionicons name="scan-outline" size={20} color="#FFF" />
         <Text style={styles.text}>
           {hasData ? "Analisa Ulang" : "Mulai Skin Analysis"}
