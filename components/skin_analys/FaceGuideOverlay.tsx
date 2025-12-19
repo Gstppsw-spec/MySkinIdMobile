@@ -18,9 +18,7 @@ export default function FaceGuideOverlay() {
           <View style={styles.faceGuide} />
           <View style={styles.hint}>
             <Ionicons name="person-outline" size={18} color="#FFF" />
-            <Text style={styles.hintText}>
-              Posisikan wajah di dalam frame
-            </Text>
+            <Text style={styles.hintText}>Posisikan wajah di dalam frame</Text>
           </View>
         </View>
 
@@ -59,7 +57,7 @@ const styles = StyleSheet.create({
   },
   hint: {
     position: "absolute",
-    bottom: -36,
+    bottom: -30,
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
@@ -67,6 +65,6 @@ const styles = StyleSheet.create({
   hintText: {
     color: "#FFF",
     fontSize: 13,
-    fontWeight: "600",
+    fontWeight: "600"
   },
 });

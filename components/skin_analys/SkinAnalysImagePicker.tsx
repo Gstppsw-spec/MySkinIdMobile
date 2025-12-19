@@ -11,16 +11,20 @@ import * as ImagePicker from "expo-image-picker";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
 import FaceGuideOverlay from "./FaceGuideOverlay";
+import { useCreateSkinAnalys } from "@/api/skin_analys";
+import Toast from "react-native-toast-message";
 
 export default function SkinAnalysImagePicker({
   visible,
   onClose,
+  customerId,
 }: {
   visible: boolean;
   onClose: () => void;
+  customerId: string;
 }) {
   const [image, setImage] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const skinAnaysMutation = useCreateSkinAnalys();
 
   const pickFromGallery = async () => {
     const res = await ImagePicker.launchImageLibraryAsync({
@@ -43,18 +47,52 @@ export default function SkinAnalysImagePicker({
     }
   };
 
-  const submitImage = async () => {
-    if (!image) return;
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setImage(null);
-      onClose();
-    }, 1500);
-  };
-
   const resetImage = () => {
     setImage(null);
+  };
+
+  const handleSkinAnalys = async () => {
+    if (!image) return;
+    const formData = new FormData();
+    formData.append("customerId", customerId);
+    formData.append("image", {
+      uri: image,
+      type: "image/jpeg",
+      name: `skin_${Date.now()}.jpg`,
+    } as any);
+
+    try {
+      await skinAnaysMutation.mutateAsync(formData, {
+        onSuccess: () => {
+          Toast.show({
+            type: "success",
+            text1: "Skin Analysis Berhasil",
+            text2: "Hasil skin analysis telah diperbarui.",
+          });
+          onClose();
+        },
+        onError: () => {
+          Toast.show({
+            type: "error",
+            text1: "Skin Analysis Gagal",
+            text2:
+              "Terjadi kesalahan saat melakukan skin analysis, coba lagi nanti.",
+          });
+          onClose();
+        },
+      });
+      setImage(null);
+    } catch (err) {
+      console.log(err);
+
+      Toast.show({
+        type: "error",
+        text1: "Skin Analysis Gagal",
+        text2:
+          "Terjadi kesalahan saat melakukan skin analysis, coba lagi nanti.",
+      });
+      onClose();
+    }
   };
 
   return (
@@ -80,14 +118,14 @@ export default function SkinAnalysImagePicker({
               <>
                 <View style={styles.previewWrapper}>
                   <Image source={{ uri: image }} style={styles.preview} />
-                  {/* <FaceGuideOverlay /> */}
+                  <FaceGuideOverlay />
                 </View>
 
                 <View style={styles.previewActions}>
                   <TouchableOpacity
                     style={styles.changeButton}
                     onPress={resetImage}
-                    disabled={loading}
+                    disabled={skinAnaysMutation.isPending}
                   >
                     <Ionicons
                       name="refresh-outline"
@@ -99,10 +137,10 @@ export default function SkinAnalysImagePicker({
 
                   <TouchableOpacity
                     style={styles.submit}
-                    onPress={submitImage}
-                    disabled={loading}
+                    onPress={handleSkinAnalys}
+                    disabled={skinAnaysMutation.isPending}
                   >
-                    {loading ? (
+                    {skinAnaysMutation.isPending ? (
                       <ActivityIndicator color="#FFF" />
                     ) : (
                       <Text style={styles.submitText}>Kirim Analisis</Text>

@@ -5,8 +5,11 @@ import SkinAnalysImagePicker from "./SkinAnalysImagePicker";
 
 export default function SkinAnalysActionButton({
   hasData,
+    customerId
 }: {
   hasData: boolean;
+  customerId: string;
+
 }) {
   const [open, setOpen] = useState(false);
 
@@ -25,6 +28,7 @@ export default function SkinAnalysActionButton({
       <SkinAnalysImagePicker
         visible={open}
         onClose={() => setOpen(false)}
+        customerId={customerId}
       />
     </>
   );
