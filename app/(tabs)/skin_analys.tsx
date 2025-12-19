@@ -2,7 +2,7 @@ import { StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import RequiredLogin from "@/components/required/required_login";
 import { useAuthStore } from "@/store/authStore";
 import ConsultationHeader from "@/components/header/consultationHeader";
-import { useCreateSkinAnalys, useSkinAnalys } from "@/api/skin_analys";
+import { useSkinAnalys } from "@/api/skin_analys";
 
 import SkinAnalysSummary from "@/components/skin_analys/SkinAnalysSummary";
 import SkinScoreSection from "@/components/skin_analys/SkinScoreSection";
@@ -10,8 +10,6 @@ import SkinTypeCard from "@/components/skin_analys/SkinTypeCard";
 import SkinIssueList from "@/components/skin_analys/SkinIssueList";
 import DataStateView from "@/components/common/DataStateView";
 import SkinAnalysActionButton from "@/components/skin_analys/SkinAnalysActionButton";
-import Toast from "react-native-toast-message";
-import { useState } from "react";
 
 export default function SkinAnalysScreen() {
   const customerId = useAuthStore((state) => state.customerId);
@@ -22,7 +20,6 @@ export default function SkinAnalysScreen() {
   }
 
   const hasData = !!data;
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -37,7 +34,8 @@ export default function SkinAnalysScreen() {
         message="Lakukan skin analysis untuk mengetahui kondisi kulit wajahmu dan
             mendapatkan rekomendasi perawatan yang sesuai."
       />
-      <SkinAnalysActionButton hasData={hasData} customerId={customerId}/>
+      
+      <SkinAnalysActionButton hasData={hasData} customerId={customerId} />
 
       {data && (
         <ScrollView showsVerticalScrollIndicator={false}>

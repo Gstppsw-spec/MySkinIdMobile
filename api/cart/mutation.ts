@@ -202,7 +202,6 @@ export const updateCartService = async (
     );
     return data?.data;
   }
-
   throw new Error("Unknown update type");
 };
 
@@ -223,6 +222,7 @@ export const selectCartService = async (cartId: string) => {
     customerId,
   });
   return data;
+  
 };
 
 export const useSelectCartService = () => {

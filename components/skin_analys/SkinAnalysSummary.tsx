@@ -3,10 +3,7 @@ import { View, Text, Image, StyleSheet } from "react-native";
 export default function SkinAnalysSummary({ imageUrl }: { imageUrl: string }) {
   return (
     <View style={styles.container}>
-      <Image
-        source={{ uri: imageUrl }}
-        style={styles.image}
-      />
+      <Image source={{ uri: imageUrl }} style={styles.image} />
       <Text style={styles.title}>Hasil Analisis Kulit</Text>
       <Text style={styles.subtitle}>AI Skin Detection</Text>
     </View>
@@ -19,8 +16,8 @@ const styles = StyleSheet.create({
     marginVertical: 16,
   },
   image: {
-    width: 160,
-    height: 160,
+    width: 250,
+    height: 250,
     borderRadius: 80,
   },
   title: {

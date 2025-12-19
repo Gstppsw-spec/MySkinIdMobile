@@ -13,6 +13,9 @@ import { useState } from "react";
 import FaceGuideOverlay from "./FaceGuideOverlay";
 import { useCreateSkinAnalys } from "@/api/skin_analys";
 import Toast from "react-native-toast-message";
+import { Animated } from "react-native";
+import { useRef, useEffect } from "react";
+import LoadingOverlay from "./LoadingOverlay";
 
 export default function SkinAnalysImagePicker({
   visible,
@@ -25,6 +28,27 @@ export default function SkinAnalysImagePicker({
 }) {
   const [image, setImage] = useState<string | null>(null);
   const skinAnaysMutation = useCreateSkinAnalys();
+  const pulse = useRef(new Animated.Value(1)).current;
+  useEffect(() => {
+    if (skinAnaysMutation.isPending) {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(pulse, {
+            toValue: 0.85,
+            duration: 700,
+            useNativeDriver: true,
+          }),
+          Animated.timing(pulse, {
+            toValue: 1,
+            duration: 700,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
+    } else {
+      pulse.setValue(1);
+    }
+  }, [skinAnaysMutation.isPending]);
 
   const pickFromGallery = async () => {
     const res = await ImagePicker.launchImageLibraryAsync({
@@ -63,7 +87,7 @@ export default function SkinAnalysImagePicker({
 
     try {
       await skinAnaysMutation.mutateAsync(formData, {
-        onSuccess: () => {
+        onSuccess: (data) => {
           Toast.show({
             type: "success",
             text1: "Skin Analysis Berhasil",
@@ -71,28 +95,72 @@ export default function SkinAnalysImagePicker({
           });
           onClose();
         },
-        onError: () => {
+        onError: (error: any) => {
           Toast.show({
             type: "error",
             text1: "Skin Analysis Gagal",
             text2:
+              error?.response?.data?.message ||
               "Terjadi kesalahan saat melakukan skin analysis, coba lagi nanti.",
           });
           onClose();
         },
       });
       setImage(null);
-    } catch (err) {
-      console.log(err);
-
+    } catch (error: any) {
       Toast.show({
         type: "error",
         text1: "Skin Analysis Gagal",
         text2:
+          error?.response?.data?.message ||
           "Terjadi kesalahan saat melakukan skin analysis, coba lagi nanti.",
       });
       onClose();
     }
+  };
+
+  const DotLoader = () => {
+    const dotAnim = useRef(new Animated.Value(0)).current;
+    const [dotCount, setDotCount] = useState(1);
+
+    useEffect(() => {
+      const animation = Animated.loop(
+        Animated.sequence([
+          Animated.timing(dotAnim, {
+            toValue: 1,
+            duration: 400,
+            useNativeDriver: false, // karena kita update state
+          }),
+          Animated.timing(dotAnim, {
+            toValue: 2,
+            duration: 400,
+            useNativeDriver: false,
+          }),
+          Animated.timing(dotAnim, {
+            toValue: 3,
+            duration: 400,
+            useNativeDriver: false,
+          }),
+        ])
+      );
+
+      const listenerId = dotAnim.addListener(({ value }) => {
+        setDotCount(Math.max(1, Math.round(value)));
+      });
+
+      animation.start();
+
+      return () => {
+        dotAnim.removeListener(listenerId);
+        animation.stop();
+      };
+    }, []);
+
+    return (
+      <Text style={{ color: "#FFF", fontWeight: "700" }}>
+        Mengirim{".".repeat(dotCount)}
+      </Text>
+    );
   };
 
   return (
@@ -116,10 +184,13 @@ export default function SkinAnalysImagePicker({
           ) : (
             <>
               <>
-                <View style={styles.previewWrapper}>
+                <Animated.View style={[styles.previewWrapper, { transform: [{ scale: pulse }] }]}>
                   <Image source={{ uri: image }} style={styles.preview} />
                   <FaceGuideOverlay />
-                </View>
+                </Animated.View>
+                {skinAnaysMutation.isPending && (
+                  <View style={styles.imageOverlay} />
+                )}
 
                 <View style={styles.previewActions}>
                   <TouchableOpacity
@@ -136,12 +207,15 @@ export default function SkinAnalysImagePicker({
                   </TouchableOpacity>
 
                   <TouchableOpacity
-                    style={styles.submit}
-                    onPress={handleSkinAnalys}
+                    style={[
+                      styles.submit,
+                      skinAnaysMutation.isPending && { opacity: 0.85 },
+                    ]}
                     disabled={skinAnaysMutation.isPending}
+                    onPress={handleSkinAnalys}
                   >
                     {skinAnaysMutation.isPending ? (
-                      <ActivityIndicator color="#FFF" />
+                      <DotLoader />
                     ) : (
                       <Text style={styles.submitText}>Kirim Analisis</Text>
                     )}
@@ -156,6 +230,7 @@ export default function SkinAnalysImagePicker({
           </TouchableOpacity>
         </View>
       </View>
+      <LoadingOverlay visible={skinAnaysMutation.isPending} />
     </Modal>
   );
 }
@@ -172,6 +247,10 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 28,
     padding: 20,
     paddingBottom: 28,
+  },
+  imageOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.35)",
   },
 
   handle: {
