@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import apiClient from "../apiClient";
+import { useAuthStore } from "@/store/authStore";
 
 export interface PayloadFavorite {
   refferenceId: string;
@@ -20,7 +21,7 @@ export const useAddFavorite = () => {
   return useMutation<PayloadFavorite, Error, Omit<PayloadFavorite, "id">>({
     mutationFn: addFavorite,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["favorite"] });
+      queryClient.invalidateQueries({ queryKey: ["favorites"] });
     },
   });
 };

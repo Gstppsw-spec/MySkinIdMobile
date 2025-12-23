@@ -30,7 +30,7 @@ const fetchFavorites = async (id: string): Promise<Favorite> => {
 export function useFavorites(customerId?: string | null) {
   return useQuery({
     queryKey: ["favorites", customerId],
-    queryFn: () => fetchFavorites(customerId!), 
+    queryFn: () => fetchFavorites(customerId!),
     enabled: typeof customerId === "string" && customerId.length > 0,
   });
 }

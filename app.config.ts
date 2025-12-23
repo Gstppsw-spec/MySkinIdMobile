@@ -1,18 +1,16 @@
 import { ConfigContext, ExpoConfig } from "expo/config";
 import { version } from "./package.json";
 
-
 const EAS_PROJECT_ID = "e2e4f0d1-d418-4ca2-a70a-eb203aa0b677";
 const PROJECT_SLUG = "go-glow";
 const OWNER = "gstp_psw15";
 
-const APP_NAME = "Go Glow";
+const APP_NAME = "MySkinID";
 const BUNDLE_IDENTIFIER = "com.company.goglow";
 const PACKAGE_NAME = "com.company.goglow";
 const ICON = "./assets/images/icons/iOS-Prod.png";
-const ADAPTIVE_ICON = "./assets/icons/adaptive-icon.png";
+const ADAPTIVE_ICON = "./assets/images/icons/adaptive-icon.png";
 const SCHEME = "app-scheme";
-
 
 export default ({ config }: ConfigContext): ExpoConfig => {
   console.log("⚙️ Building app for environment:", process.env.APP_ENV);
@@ -34,28 +32,25 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     ios: {
       supportsTablet: true,
       bundleIdentifier: bundleIdentifier,
-      "infoPlist": {
+      infoPlist: {
         ITSAppUsesNonExemptEncryption: false,
-        NSLocationWhenInUseUsageDescription: "Aplikasi butuh akses lokasi untuk presensi dan upload data.",
-        NSCameraUsageDescription: "Aplikasi butuh akses kamera untuk mengambil foto untuk presensi dan upload data.",
+        NSLocationWhenInUseUsageDescription:
+          "Aplikasi butuh akses lokasi untuk presensi dan upload data.",
+        NSCameraUsageDescription:
+          "Aplikasi butuh akses kamera untuk mengambil foto untuk presensi dan upload data.",
       },
       icon: {
-        dark: "./assets/icons/ios-dark.png",
-        light: "./assets/icons/ios-light.png",
-        tinted: "./assets/icons/ios-tinted.png",
-      }
+        dark: "./assets/images/icons/ios-dark.png",
+        light: "./assets/images/icons/ios-light.png",
+      },
     },
     android: {
       adaptiveIcon: {
-        foregroundImage: "./assets/icons/adaptive-icon.png",
+        foregroundImage: "./assets/images/icons/adaptive-icon.png",
         backgroundColor: "#ffffff",
-        
       },
       package: packageName,
-      "permissions": [
-        "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION"
-      ]
+      permissions: ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"],
     },
     updates: {
       url: `https://u.expo.dev/${EAS_PROJECT_ID}`,
@@ -78,23 +73,25 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       [
         "expo-splash-screen",
         {
-          image: "./assets/icons/splash-icon-dark.png",
+          image: "./assets/images/icons/splash-icon-dark.png",
           resizeMode: "contain",
           backgroundColor: "#ffffff",
           dark: {
-            image: "./assets/icons/splash-icon-light.png",
+            image: "./assets/images/icons/splash-icon-light.png",
             backgroundColor: "#000000",
           },
           imageWidth: 200,
         },
-        
-      ],[
+      ],
+      [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Aplikasi butuh akses lokasi untuk presensi dan upload data.",
-          "locationWhenInUsePermission": "Aplikasi butuh akses lokasi untuk presensi dan upload data.."
-        }
-      ]
+          locationAlwaysAndWhenInUsePermission:
+            "Aplikasi butuh akses lokasi untuk presensi dan upload data.",
+          locationWhenInUsePermission:
+            "Aplikasi butuh akses lokasi untuk presensi dan upload data..",
+        },
+      ],
     ],
     experiments: {
       typedRoutes: true,

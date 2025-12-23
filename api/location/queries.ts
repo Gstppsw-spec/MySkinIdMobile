@@ -33,7 +33,6 @@ export const useLocations = () => {
 
 export const useLocation = (id?: string) => {
   const customerId = useAuthStore((state) => state.customerId);
-
   return useQuery({
     queryKey: ["location", id],
     queryFn: () => fetchLocationById(id!),

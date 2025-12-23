@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginTop: 10,
     textAlign: "center",
+    fontWeight: "500",
   },
   retryButton: {
     backgroundColor: "#7B2CBF",
@@ -89,6 +90,7 @@ const styles = StyleSheet.create({
     color: "#64748B",
     textAlign: "center",
     lineHeight: 20,
+    paddingHorizontal: 20,
   },
 });
 

@@ -6,7 +6,7 @@ export interface Service {
   name: string;
   location: any;
   id: string;
-  isFavorite: boolean
+  isFavorite: boolean;
 }
 
 const fetchServices = async (): Promise<Service[]> => {

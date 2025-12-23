@@ -15,10 +15,6 @@ import ProductCard from "@/components/product/productCard";
 import TreatmentCard from "@/components/treatment/treatmentCard";
 import LocationCard from "@/components/location/locationCard";
 import { styles } from "./../../components/search/styles";
-import { treatment } from "../../components/treatment/dummyTreatments";
-import { useLocations } from "@/api/location";
-import { useProducts } from "@/api/product";
-import { useServices } from "@/api/service";
 import { useFavorites } from "@/api/favorites";
 import DataStateView from "@/components/common/DataStateView";
 
@@ -43,6 +39,8 @@ export default function FavoriteScreen() {
   if (!customerId) {
     return <RequiredLogin />;
   }
+
+  console.log(favorites);
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: "#FFF" }]}>

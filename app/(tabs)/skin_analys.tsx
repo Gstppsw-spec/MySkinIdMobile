@@ -10,6 +10,7 @@ import SkinTypeCard from "@/components/skin_analys/SkinTypeCard";
 import SkinIssueList from "@/components/skin_analys/SkinIssueList";
 import DataStateView from "@/components/common/DataStateView";
 import SkinAnalysActionButton from "@/components/skin_analys/SkinAnalysActionButton";
+import { getSkinAnalysisCooldown } from "@/components/utils/skinCooldown";
 
 export default function SkinAnalysScreen() {
   const customerId = useAuthStore((state) => state.customerId);
@@ -20,6 +21,8 @@ export default function SkinAnalysScreen() {
   }
 
   const hasData = !!data;
+
+  const cooldown = getSkinAnalysisCooldown(data?.createdAt);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -34,24 +37,27 @@ export default function SkinAnalysScreen() {
         message="Lakukan skin analysis untuk mengetahui kondisi kulit wajahmu dan
             mendapatkan rekomendasi perawatan yang sesuai."
       />
-      
-      <SkinAnalysActionButton hasData={hasData} customerId={customerId} />
 
       {data && (
         <ScrollView showsVerticalScrollIndicator={false}>
           <SkinAnalysSummary imageUrl={data.imageUrl} />
-
           <SkinScoreSection
             acne={data.acneScore}
             wrinkle={data.wrinkleScore}
             oil={data.oilScore}
           />
-
           <SkinTypeCard skinType={data.skinType} severity={data.severity} />
-
           <SkinIssueList result={data.rawResponse.result} />
         </ScrollView>
       )}
+
+      <SkinAnalysActionButton
+        hasData={hasData}
+        customerId={customerId}
+        canAnalyze={cooldown.canAnalyze}
+        remainingDays={cooldown.remainingDays}
+        remainingHours={cooldown.remainingHours}
+      />
     </SafeAreaView>
   );
 }

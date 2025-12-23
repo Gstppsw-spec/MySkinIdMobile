@@ -23,7 +23,9 @@ export default function ConsultationScreen() {
   const { data, isLoading, isError, refetch } = useConsultationRoomByUserId(
     customerId || undefined
   );
+
   if (!customerId) return <RequiredLogin />;
+
   const hasData = data && data?.length > 0;
   return (
     <SafeAreaView
@@ -40,6 +42,7 @@ export default function ConsultationScreen() {
         data={data}
         onRetry={refetch}
         emptyMessage="Belum ada konsultasi."
+        message="Segera konsultasikan masalah kulitmu dengan ahlinya untuk mendapatkan solusi yang tepat."
       />
 
       {!isLoading && !isError && hasData && (
@@ -66,12 +69,15 @@ export default function ConsultationScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  centerContent: { flex: 1, justifyContent: "center", alignItems: "center" },
+  centerContent: { paddingHorizontal: 16, marginBottom: 8, marginTop: 10 },
   startButton: {
-    backgroundColor: "#7B2CBF",
-    borderRadius: 10,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    backgroundColor: "#6C1FC7",
+    borderRadius: 14,
+    paddingVertical: 14,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 8,
   },
   startText: { color: "#fff", fontWeight: "700" },
 });
